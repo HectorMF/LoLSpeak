@@ -17,7 +17,7 @@ public class SummonerGameInfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summoner_game_info);
 
-        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+        mTabHost = (TabHost) findViewById(R.id.summonerGameInfoTabHost);
 
         TabHost.TabSpec masteriesTab = mTabHost.newTabSpec("Masteries");
         TabHost.TabSpec runesTab = mTabHost.newTabSpec("Runes");

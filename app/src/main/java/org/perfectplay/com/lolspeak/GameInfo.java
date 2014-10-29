@@ -20,7 +20,8 @@ public class GameInfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_info);
 
-        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+
+        mTabHost = (TabHost) findViewById(R.id.gameInfoTabHost);
 
         TabHost.TabSpec championsTab = mTabHost.newTabSpec("Champions");
         TabHost.TabSpec itemsTab = mTabHost.newTabSpec("Items");
@@ -38,7 +39,6 @@ public class GameInfo extends Activity {
         mTabHost.addTab(championsTab);
         mTabHost.addTab(itemsTab);
         mTabHost.addTab(summonersTab);
-
     }
 
 
