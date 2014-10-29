@@ -26,4 +26,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.igniterealtime.smack:smack-tcp:4.1.0-alpha4'
     compile 'org.igniterealtime.smack:smack-android:4.1.0-alpha4'
+    compile files('libs/riot-api-java.jar')
 }

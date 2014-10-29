@@ -92,6 +92,7 @@
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="smack-core-4.1.0-alpha4" level="project" />
+    <orderEntry type="library" exported="" name="riot-api-java" level="project" />
   </component>
 </module>
 
