@@ -13,8 +13,65 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainMenu"
+            android:label="@string/title_activity_main_menu" >
+        </activity>
+        <activity
+            android:name=".GameInfo"
+            android:label="@string/title_activity_game_info" >
+        </activity>
+        <activity
+            android:name=".GameInfoActivities.ChampionList"
+            android:label="@string/title_activity_champion_list"
+            android:parentActivityName=".GameInfo" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.perfectplay.com.lolspeak.GameInfo" />
+        </activity>
+        <activity
+            android:name=".GameInfoActivities.ItemList"
+            android:label="@string/title_activity_item_list"
+            android:parentActivityName=".GameInfo" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.perfectplay.com.lolspeak.GameInfo" />
+        </activity>
+        <activity
+            android:name=".GameInfoActivities.SummonerGameInfo"
+            android:label="@string/title_activity_summoner_game_info"
+            android:parentActivityName=".GameInfo" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.perfectplay.com.lolspeak.GameInfo" />
+        </activity>
+        <activity
+            android:name=".GameInfoActivities.SummonerSpellList"
+            android:label="@string/title_activity_summoner_spell_list"
+            android:parentActivityName=".GameInfoActivities.SummonerGameInfo" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.perfectplay.com.lolspeak.GameInfoActivities.SummonerGameInfo" />
+        </activity>
+        <activity
+            android:name=".GameInfoActivities.Masteries"
+            android:label="@string/title_activity_masteries"
+            android:parentActivityName=".GameInfoActivities.SummonerGameInfo" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.perfectplay.com.lolspeak.GameInfoActivities.SummonerGameInfo" />
+        </activity>
+        <activity
+            android:name=".GameInfoActivities.RuneList"
+            android:label="@string/title_activity_rune_list"
+            android:parentActivityName=".GameInfoActivities.SummonerGameInfo" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.perfectplay.com.lolspeak.GameInfoActivities.SummonerGameInfo" />
         </activity>
     </application>
 
