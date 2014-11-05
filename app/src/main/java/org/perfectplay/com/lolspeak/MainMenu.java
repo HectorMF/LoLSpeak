@@ -51,7 +51,7 @@ public class MainMenu extends Activity implements View.OnClickListener{
                 (view.getId())
         {
             case R.id.gameInfoButton:
-                startActivity(new Intent(this, GameInfo.class));
+                startActivity(new Intent(this, GameInfoTabbed.class));
                 break;
         }
     }
