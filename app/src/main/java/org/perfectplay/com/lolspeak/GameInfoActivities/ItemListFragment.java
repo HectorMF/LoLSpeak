@@ -3,6 +3,7 @@ package org.perfectplay.com.lolspeak.GameInfoActivities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,9 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListAdapter mAdapter;
+    private ArrayAdapter<String> mAdapter;
+    private ArrayList<String> data;
+    private Handler handler;
     private Toast toast;
 
     // TODO: Rename and change types of parameters
@@ -71,8 +74,51 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
+        handler = new Handler();
+
+        final Runnable r = new Runnable()
+        {
+            public void run()
+            {
+                if(mAdapter.getCount() == 0)
+                    handler.postDelayed(this, 500);
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+
+        handler.post(r);
+
+        data = new ArrayList<String>();
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_LONG);
+    }
+
+    public void FillList(ItemList list)
+    {
+        data.clear();
+
+        Item[] tempItems = new Item[list.getData().values().size()];
+        list.getData().values().toArray(tempItems);
+
+        items = tempItems;
+
+        for(int i =0; i < tempItems.length; i++) {
+            data.add(tempItems[i].getName());
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_summonerspell, container, false);
+
+        mAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, data);
+        // Set the adapter
+        mListView = (AbsListView) view.findViewById(android.R.id.list);
+        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+        // Set OnItemClickListener so we can be notified on item clicks
+        mListView.setOnItemClickListener(this);
 
         Thread t = new Thread()
         {
@@ -89,37 +135,6 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
             }};
 
         t.start();
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_LONG);
-    }
-
-    public void FillList(ItemList list)
-    {
-        ArrayList<String> testList = new ArrayList<String>();
-
-        Item[] tempItems = new Item[list.getData().values().size()];
-        list.getData().values().toArray(tempItems);
-
-        items = tempItems;
-
-        for(int i =0; i < tempItems.length; i++) {
-            testList.add(tempItems[i].getName());
-        }
-
-        mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, testList);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_summonerspell, container, false);
-
-        // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
 
         return view;
     }

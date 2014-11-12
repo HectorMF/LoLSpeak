@@ -78,16 +78,14 @@ public class SummonerSpellFragment extends Fragment implements AbsListView.OnIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-        }
-
         handler = new Handler();
 
         final Runnable r = new Runnable()
         {
             public void run()
             {
-                handler.postDelayed(this, 500);
+                if(mAdapter.getCount() == 0)
+                    handler.postDelayed(this, 500);
                 mAdapter.notifyDataSetChanged();
             }
         };
