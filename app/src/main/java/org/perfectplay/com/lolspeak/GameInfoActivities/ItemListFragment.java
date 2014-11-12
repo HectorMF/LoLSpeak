@@ -16,6 +16,12 @@ import android.widget.Toast;
 import org.perfectplay.com.lolspeak.R;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import constant.Region;
+import dto.Summoner.Summoner;
+import main.java.riotapi.RiotApi;
+import main.java.riotapi.RiotApiException;
 
 /**
  * A fragment representing a list of Items.
@@ -77,6 +83,18 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         // TODO: Change Adapter to display your content
+        RiotApi api = new RiotApi("a29fee68-0e2a-446e-b1ec-211dba50aedc");
+        api.setRegion(Region.NA);
+        Map<String, Summoner> summoners = null;
+        try {
+            summoners = api.getSummonersByName("rithms, tryndamere");
+        } catch (RiotApiException e) {
+            e.printStackTrace();
+        }
+        Summoner summoner = summoners.get("rithms");
+        long id = summoner.getId();
+        System.out.println(id);
+
         ArrayList<String> testList = new ArrayList<String>();
         testList.add("BotRK");
         testList.add("Bloodthirster");
