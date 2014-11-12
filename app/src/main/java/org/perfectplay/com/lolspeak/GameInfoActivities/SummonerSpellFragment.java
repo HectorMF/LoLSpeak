@@ -16,6 +16,15 @@ import android.widget.Toast;
 import org.perfectplay.com.lolspeak.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import constant.Region;
+import dto.Static.SummonerSpell;
+import dto.Static.SummonerSpellList;
+import main.java.riotapi.RiotApi;
+import main.java.riotapi.RiotApiException;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +38,7 @@ import java.util.ArrayList;
 public class SummonerSpellFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private OnFragmentInteractionListener mListener;
+    private SummonerSpell[] summonerSpells;
 
     /**
      * The fragment's ListView/GridView.
@@ -63,15 +73,38 @@ public class SummonerSpellFragment extends Fragment implements AbsListView.OnIte
         if (getArguments() != null) {
         }
 
+        Thread t = new Thread()
+        {
+            @Override
+            public void run() {
+                RiotApi api = new RiotApi("a29fee68-0e2a-446e-b1ec-211dba50aedc");
+                api.setRegion(Region.NA);
+
+                try {
+                    FillList(api.getDataSummonerSpellList());
+                } catch (RiotApiException e) {
+                    e.printStackTrace();
+                }
+            }};
+
+        t.start();
+    }
+
+    public void FillList(SummonerSpellList list)
+    {
         ArrayList<String> testList = new ArrayList<String>();
-        testList.add("Flash");
-        testList.add("Heal");
-        testList.add("Ignite");
+
+        SummonerSpell[] summoners = new SummonerSpell[list.getData().values().size()];
+        list.getData().values().toArray(summoners);
+
+        summonerSpells = summoners;
+
+        for(int i =0; i < summoners.length; i++) {
+            testList.add(summoners[i].getName());
+        }
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, testList);
-
-
     }
 
     @Override
@@ -112,7 +145,10 @@ public class SummonerSpellFragment extends Fragment implements AbsListView.OnIte
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            Toast.makeText(getActivity(), "This spell does something", Toast.LENGTH_SHORT).show();
+
+            String description = summonerSpells[(int)id].getDescription();
+
+            Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
         }
     }
 

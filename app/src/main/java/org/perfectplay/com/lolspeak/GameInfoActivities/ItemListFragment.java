@@ -83,21 +83,26 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         // TODO: Change Adapter to display your content
-        RiotApi api = new RiotApi("a29fee68-0e2a-446e-b1ec-211dba50aedc");
-        api.setRegion(Region.NA);
-        Map<String, Summoner> summoners = null;
-        try {
-            summoners = api.getSummonersByName("rithms, tryndamere");
-        } catch (RiotApiException e) {
-            e.printStackTrace();
-        }
-        Summoner summoner = summoners.get("rithms");
-        long id = summoner.getId();
-        System.out.println(id);
+        Thread t = new Thread()
+        {
+            @Override
+            public void run() {
+                RiotApi api = new RiotApi("a29fee68-0e2a-446e-b1ec-211dba50aedc");
+                api.setRegion(Region.NA);
+                Map<String, Summoner> summoners = null;
+                try {
+                    summoners = api.getSummonersByName("rithms, tryndamere");
+                } catch (RiotApiException e) {
+                    e.printStackTrace();
+                }
+                Summoner summoner = summoners.get("rithms");
+                long id = summoner.getId();
+                System.out.println(id);
+            }};
+
+        t.start();
 
         ArrayList<String> testList = new ArrayList<String>();
-        testList.add("BotRK");
-        testList.add("Bloodthirster");
         testList.add("Infinity Edge");
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
