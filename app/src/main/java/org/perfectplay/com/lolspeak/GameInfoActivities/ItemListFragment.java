@@ -16,10 +16,13 @@ import android.widget.Toast;
 import org.perfectplay.com.lolspeak.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import constant.Region;
-import dto.Summoner.Summoner;
+import dto.Static.Item;
+import dto.Static.ItemList;
 import main.java.riotapi.RiotApi;
 import main.java.riotapi.RiotApiException;
 
@@ -34,16 +37,8 @@ import main.java.riotapi.RiotApiException;
  */
 public class ItemListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+    private Item[] items;
 
     /**
      * The fragment's ListView/GridView.
@@ -55,13 +50,12 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
      * Views.
      */
     private ListAdapter mAdapter;
+    private Toast toast;
 
     // TODO: Rename and change types of parameters
     public static ItemListFragment newInstance(String param1, String param2) {
         ItemListFragment fragment = new ItemListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,32 +72,38 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content
         Thread t = new Thread()
         {
             @Override
             public void run() {
                 RiotApi api = new RiotApi("a29fee68-0e2a-446e-b1ec-211dba50aedc");
                 api.setRegion(Region.NA);
-                Map<String, Summoner> summoners = null;
+
                 try {
-                    summoners = api.getSummonersByName("rithms, tryndamere");
+                    FillList(api.getDataItemList());
                 } catch (RiotApiException e) {
                     e.printStackTrace();
                 }
-                Summoner summoner = summoners.get("rithms");
-                long id = summoner.getId();
-                System.out.println(id);
             }};
 
         t.start();
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_LONG);
+    }
 
+    public void FillList(ItemList list)
+    {
         ArrayList<String> testList = new ArrayList<String>();
-        testList.add("Infinity Edge");
+
+        Item[] tempItems = new Item[list.getData().values().size()];
+        list.getData().values().toArray(tempItems);
+
+        items = tempItems;
+
+        for(int i =0; i < tempItems.length; i++) {
+            testList.add(tempItems[i].getName());
+        }
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, testList);
@@ -112,7 +112,7 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_itemlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_summonerspell, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -131,7 +131,7 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                + " must implement OnFragmentInteractionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -147,7 +147,12 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            Toast.makeText(getActivity(), "This item does something", Toast.LENGTH_SHORT).show();
+
+            String description = items[(int)id].getDescription();
+
+            toast.setText(description);
+
+            toast.show();
         }
     }
 
@@ -165,15 +170,15 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
     }
 
     /**
-    * This interface must be implemented by activities that contain this
-    * fragment to allow an interaction in this fragment to be communicated
-    * to the activity and potentially other fragments contained in that
-    * activity.
-    * <p>
-    * See the Android Training lesson <a href=
-    * "http://developer.android.com/training/basics/fragments/communicating.html"
-    * >Communicating with Other Fragments</a> for more information.
-    */
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
