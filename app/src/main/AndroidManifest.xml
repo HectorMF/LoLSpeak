@@ -42,38 +42,6 @@
                 android:value="org.perfectplay.com.lolspeak.GameInfo" />
         </activity>
         <activity
-            android:name=".GameInfoActivities.SummonerGameInfo"
-            android:label="@string/title_activity_summoner_game_info"
-            android:parentActivityName=".GameInfo" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.perfectplay.com.lolspeak.GameInfo" />
-        </activity>
-        <activity
-            android:name=".GameInfoActivities.SummonerSpellList"
-            android:label="@string/title_activity_summoner_spell_list"
-            android:parentActivityName=".GameInfoActivities.SummonerGameInfo" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.perfectplay.com.lolspeak.GameInfoActivities.SummonerGameInfo" />
-        </activity>
-        <activity
-            android:name=".GameInfoActivities.Masteries"
-            android:label="@string/title_activity_masteries"
-            android:parentActivityName=".GameInfoActivities.SummonerGameInfo" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.perfectplay.com.lolspeak.GameInfoActivities.SummonerGameInfo" />
-        </activity>
-        <activity
-            android:name=".GameInfoActivities.RuneList"
-            android:label="@string/title_activity_rune_list"
-            android:parentActivityName=".GameInfoActivities.SummonerGameInfo" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.perfectplay.com.lolspeak.GameInfoActivities.SummonerGameInfo" />
-        </activity>
-        <activity
             android:name=".GameInfoTabbed"
             android:label="@string/title_activity_game_info_tabbed" >
         </activity>

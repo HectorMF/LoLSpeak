@@ -21,9 +21,10 @@ import android.widget.TextView;
 
 import org.perfectplay.com.lolspeak.GameInfoActivities.ChampionListFragment;
 import org.perfectplay.com.lolspeak.GameInfoActivities.ItemListFragment;
+import org.perfectplay.com.lolspeak.GameInfoActivities.SummonerSpellFragment;
 import org.perfectplay.com.lolspeak.R;
 
-public class GameInfoTabbed extends Activity implements ActionBar.TabListener, ChampionListFragment.OnFragmentInteractionListener, ItemListFragment.OnFragmentInteractionListener {
+public class GameInfoTabbed extends Activity implements ActionBar.TabListener, ChampionListFragment.OnFragmentInteractionListener, ItemListFragment.OnFragmentInteractionListener, SummonerSpellFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -139,6 +140,8 @@ public class GameInfoTabbed extends Activity implements ActionBar.TabListener, C
                     return ChampionListFragment.newInstance("test", "test");
                 case 1:
                     return ItemListFragment.newInstance("test", "test");
+                case 2:
+                    return SummonerSpellFragment.newInstance("test", "test");
             }
             return ChampionListFragment.newInstance("test", "test");
         }

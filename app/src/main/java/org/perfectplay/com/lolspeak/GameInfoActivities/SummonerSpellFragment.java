@@ -26,16 +26,7 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ItemListFragment extends Fragment implements AbsListView.OnItemClickListener {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class SummonerSpellFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -51,11 +42,9 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static ItemListFragment newInstance(String param1, String param2) {
-        ItemListFragment fragment = new ItemListFragment();
+    public static SummonerSpellFragment newInstance(String param1, String param2) {
+        SummonerSpellFragment fragment = new SummonerSpellFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +53,7 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemListFragment() {
+    public SummonerSpellFragment() {
     }
 
     @Override
@@ -72,24 +61,23 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content
         ArrayList<String> testList = new ArrayList<String>();
-        testList.add("BotRK");
-        testList.add("Bloodthirster");
-        testList.add("Infinity Edge");
+        testList.add("Flash");
+        testList.add("Heal");
+        testList.add("Ignite");
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, testList);
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_itemlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_summonerspell, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -124,7 +112,7 @@ public class ItemListFragment extends Fragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            Toast.makeText(getActivity(), "This item does something", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "This spell does something", Toast.LENGTH_SHORT).show();
         }
     }
 

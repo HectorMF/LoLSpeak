@@ -17,5 +17,6 @@
     <string name="title_activity_masteries">Masteries</string>
     <string name="title_activity_rune_list">RuneList</string>
     <string name="title_activity_game_info_tabbed">GameInfoTabbed</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
