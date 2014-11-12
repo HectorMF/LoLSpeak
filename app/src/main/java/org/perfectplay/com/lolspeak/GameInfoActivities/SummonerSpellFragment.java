@@ -50,6 +50,7 @@ public class SummonerSpellFragment extends Fragment implements AbsListView.OnIte
      * Views.
      */
     private ListAdapter mAdapter;
+    private Toast toast;
 
     // TODO: Rename and change types of parameters
     public static SummonerSpellFragment newInstance(String param1, String param2) {
@@ -88,6 +89,7 @@ public class SummonerSpellFragment extends Fragment implements AbsListView.OnIte
             }};
 
         t.start();
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_LONG);
     }
 
     public void FillList(SummonerSpellList list)
@@ -148,7 +150,9 @@ public class SummonerSpellFragment extends Fragment implements AbsListView.OnIte
 
             String description = summonerSpells[(int)id].getDescription();
 
-            Toast.makeText(getActivity(), description, Toast.LENGTH_SHORT).show();
+            toast.setText(description);
+
+            toast.show();
         }
     }
 
