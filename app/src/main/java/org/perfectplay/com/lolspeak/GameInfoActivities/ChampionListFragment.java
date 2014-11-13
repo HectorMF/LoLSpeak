@@ -75,19 +75,6 @@ public class ChampionListFragment extends Fragment implements AbsListView.OnItem
         super.onCreate(savedInstanceState);
 
         handler = new Handler();
-
-        final Runnable r = new Runnable()
-        {
-            public void run()
-            {
-                if(mAdapter.getCount() == 0)
-                    handler.postDelayed(this, 500);
-                mAdapter.notifyDataSetChanged();
-            }
-        };
-
-        handler.post(r);
-
         data = new ArrayList<String>();
         toast = Toast.makeText(getActivity(), null, Toast.LENGTH_LONG);
     }
@@ -133,6 +120,19 @@ public class ChampionListFragment extends Fragment implements AbsListView.OnItem
             }};
 
         t.start();
+
+        final Runnable r = new Runnable()
+        {
+            public void run()
+            {
+                if(mAdapter.getCount() == 0)
+                    handler.postDelayed(this, 500);
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+
+        handler.post(r);
+
         return view;
     }
 
