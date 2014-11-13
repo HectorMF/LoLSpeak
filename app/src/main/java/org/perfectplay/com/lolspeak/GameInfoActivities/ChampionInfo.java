@@ -14,6 +14,7 @@ import android.widget.ListView;
 import org.perfectplay.com.lolspeak.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import constant.Region;
@@ -55,8 +56,11 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
                 api.setRegion(Region.NA);
 
                 try {
-                    Champion[] champs = (Champion[]) api.getDataChampionList().getData().values().toArray();
-                    PopulatePage(champs[0]);
+                    //Collection<Champion> shittyList = api.getDataChampionList().getData().values();
+                    //Champion[] champs = new Champion[shittyList.size()];
+                    //api.getDataChampionList().getData().values().toArray(champs);
+                    dto.Champion.Champion champ = api.getChampionById(266);
+                    PopulatePage(api.getDataChampion(266));
                 } catch (RiotApiException e) {
                     e.printStackTrace();
                 }
