@@ -33,6 +33,7 @@ import java.util.List;
 import android.util.*;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
@@ -64,7 +65,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     private View mProgressView;
     private View mLoginFormView;
     private ConnectionConfiguration config;
-    private static XMPPTCPConnection xmppConnection;
+    public static XMPPTCPConnection xmppConnection;
+    public static Roster roster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -321,6 +323,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             try {
                 xmppConnection.connect();
                 xmppConnection.login(mEmail, "AIR_" + mPassword , "xiff");
+                roster = xmppConnection.getRoster();
             } catch (XMPPException e) {
                 e.printStackTrace();
             } catch (SmackException e) {

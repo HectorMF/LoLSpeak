@@ -32,6 +32,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.perfectplay.com.lolspeak.GameInfo" />
         </activity>
+
         <activity
             android:name=".GameInfoActivities.ItemList"
             android:label="@string/title_activity_item_list"
