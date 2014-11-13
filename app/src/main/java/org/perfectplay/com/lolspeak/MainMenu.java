@@ -53,6 +53,9 @@ public class MainMenu extends Activity implements View.OnClickListener{
             case R.id.gameInfoButton:
                 startActivity(new Intent(this, GameInfoTabbed.class));
                 break;
+            case R.id.summonerReviewButton:
+                startActivity(new Intent(this, ChatActivity.class));
+                break;
         }
     }
 }

@@ -26,9 +26,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import android.util.*;
+
+import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 
 /**
@@ -56,11 +63,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ConnectionConfiguration config;
+    private static XMPPTCPConnection xmppConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         Log.e(TAG, "+++ In onCreate() +++");
 
         // Set up the login form.
@@ -140,8 +150,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             return;
         }
 
-        startActivity(new Intent(this, MainMenu.class));
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -180,18 +188,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(this, email, password);
             mAuthTask.execute((Void) null);
         }
     }
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return true;
     }
 
     /**
@@ -292,8 +300,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
         private final String mEmail;
         private final String mPassword;
+        private Activity activity;
 
-        UserLoginTask(String email, String password) {
+
+        UserLoginTask(Activity activity, String email, String password) {
+            this.activity = activity;
             mEmail = email;
             mPassword = password;
         }
@@ -301,24 +312,25 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            config = new ConnectionConfiguration("chat.na1.lol.riotgames.com", 5223, "pvp.net");
+            config.setSecurityMode(ConnectionConfiguration.SecurityMode.enabled);
+            config.setSocketFactory(new DummySSLSocketFactory());
+            config.setCompressionEnabled(true);
+            xmppConnection = new XMPPTCPConnection(config);
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
+                xmppConnection.connect();
+                xmppConnection.login(mEmail, "AIR_" + mPassword , "xiff");
+            } catch (XMPPException e) {
+                e.printStackTrace();
+            } catch (SmackException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             // TODO: register the new account here.
-            return true;
+            return xmppConnection.isAuthenticated();
         }
 
         @Override
@@ -327,7 +339,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             showProgress(false);
 
             if (success) {
-                finish();
+                activity.startActivity(new Intent(activity, MainMenu.class));
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
