@@ -15,6 +15,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.perfectplay.com.lolspeak.R;
 import org.perfectplay.com.lolspeak.Utility.SlidingHelper;
@@ -40,8 +41,9 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
     private Champion data;
     private Handler handler;
     private ListView spellList;
-    private ScrollView loreDesc;
+    private TextView loreDesc;
     private GridLayout stats;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
 
         // Set the adapter
         spellList = (ListView) findViewById(R.id.spellListContent);
-        loreDesc = (ScrollView) findViewById(R.id.loreDesc);
+        loreDesc = (TextView) findViewById(R.id.loreDesc);
         stats = (GridLayout) findViewById(R.id.statsContent);
 
         loreDesc.setVisibility(View.GONE);
@@ -63,6 +65,8 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
 
         // Set OnItemClickListener so we can be notified on item clicks
         spellList.setOnItemClickListener(this);
+
+        toast = Toast.makeText(this, null, Toast.LENGTH_LONG);
 
         Thread t = new Thread()
         {
@@ -109,6 +113,7 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
             loreDesc.setVisibility(View.GONE);
             SlidingHelper.slide_up(this, stats);
             stats.setVisibility(View.GONE);
+            spellList.setClickable(true);
         }
     }
 
@@ -124,6 +129,7 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
             stats.setVisibility(View.GONE);
             SlidingHelper.slide_up(this, spellList);
             spellList.setVisibility(View.GONE);
+            spellList.setClickable(false);
         }
     }
 
@@ -139,6 +145,7 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
             loreDesc.setVisibility(View.GONE);
             SlidingHelper.slide_up(this, spellList);
             spellList.setVisibility(View.GONE);
+            spellList.setClickable(false);
         }
     }
 
@@ -146,11 +153,10 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
     {
         TextView name = (TextView) findViewById(R.id.champName);
         TextView title = (TextView) findViewById(R.id.champTitle);
-        TextView lore = (TextView) findViewById(R.id.loreDescLabel);
 
         name.setText(champ.getName());
         title.setText(champ.getTitle());
-        lore.setText(champ.getLore());
+        loreDesc.setText(champ.getLore());
 
 
         Stats stats = champ.getStats();
@@ -218,6 +224,10 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        if(i == 0)
+            toast.setText(data.getPassive().getDescription());
+        else
+            toast.setText(data.getSpells().get(i-1).getDescription());
+        toast.show();
     }
 }
