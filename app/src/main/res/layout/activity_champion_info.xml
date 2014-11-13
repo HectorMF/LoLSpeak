@@ -35,13 +35,13 @@
         </LinearLayout>
 
         <TextView  android:id="@+id/spellListTitle"
-        android:text="Spells"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:onClick="toggle_spellContents"
-            android:layout_below="@+id/linearLayout"
+            android:text="Spells"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:onClick="toggle_spellContents"
+            android:layout_below="@+id/statsContent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -62,24 +62,195 @@
         android:clickable="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:onClick="toggle_loreContents"
-        android:layout_below="@+id/spellListContent"/>
+        android:layout_below="@id/spellListContent"/>
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:id="@+id/scrollView"
+        android:layout_height="200dp"
+        android:id="@+id/loreDesc"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/loreTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="gone">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="LoreDescription"
-            android:id="@+id/loreDesc"
-            android:layout_below="@+id/loreTitle"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:visibility="gone" />
-
+            android:id="@+id/loreDescLabel" />
     </ScrollView>
+
+    <TextView
+        android:id="@+id/statsTitle"
+        android:text="Stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:onClick="toggle_statsContents"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:columnCount="2"
+        android:rowCount="10"
+        android:layout_below="@+id/statsTitle"
+        android:id="@+id/statsContent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Health:"
+            android:id="@+id/healthLabel"
+            android:layout_row="0"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/healthContent"
+            android:layout_row="1"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Mana:"
+            android:id="@+id/manaLabel"
+            android:layout_row="2"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/manaContent"
+            android:layout_row="3"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Attack Damage:"
+            android:id="@+id/damageLabel"
+            android:layout_row="4"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/damage"
+            android:layout_row="5"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Attack Speed:"
+            android:id="@+id/attackSpeedLabel"
+            android:layout_row="6"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/attackSpeed"
+            android:layout_row="7"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Movement Speed:"
+            android:id="@+id/movementSpeedLabel"
+            android:layout_row="8"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/movementSpeed"
+            android:layout_row="9"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Health Regen:"
+            android:id="@+id/healthRegenLabel"
+            android:layout_row="0"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/healthRegen"
+            android:layout_row="1"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Mana Regen:"
+            android:id="@+id/manaRegenLabel"
+            android:layout_row="2"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/manaRegen"
+            android:layout_row="3"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Armor:"
+            android:id="@+id/armorLabel"
+            android:layout_row="4"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/armor"
+            android:layout_row="5"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Magic Resist"
+            android:id="@+id/magicResistLabel"
+            android:layout_row="6"
+            android:layout_column="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/magicResist"
+            android:layout_row="7"
+            android:layout_column="1" />
+
+
+    </GridLayout>
 </RelativeLayout>

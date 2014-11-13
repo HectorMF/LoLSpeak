@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.perfectplay.com.lolspeak.R;
@@ -26,6 +29,8 @@ import constant.staticdata.SpellData;
 import dto.Static.Champion;
 import dto.Static.ChampionList;
 import dto.Static.ChampionSpell;
+import dto.Static.Passive;
+import dto.Static.Stats;
 import main.java.riotapi.RiotApi;
 import main.java.riotapi.RiotApiException;
 
@@ -35,7 +40,8 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
     private Champion data;
     private Handler handler;
     private ListView spellList;
-    private TextView loreDesc;
+    private ScrollView loreDesc;
+    private GridLayout stats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +53,12 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
 
         // Set the adapter
         spellList = (ListView) findViewById(R.id.spellListContent);
-        loreDesc = (TextView) findViewById(R.id.loreDesc);
+        loreDesc = (ScrollView) findViewById(R.id.loreDesc);
+        stats = (GridLayout) findViewById(R.id.statsContent);
 
         loreDesc.setVisibility(View.GONE);
         spellList.setVisibility(View.GONE);
+        stats.setVisibility(View.GONE);
         List<String> emptyList = new ArrayList<String>();
 
         // Set OnItemClickListener so we can be notified on item clicks
@@ -97,6 +105,8 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
             SlidingHelper.slide_down(this, spellList);
             SlidingHelper.slide_up(this, loreDesc);
             loreDesc.setVisibility(View.GONE);
+            SlidingHelper.slide_up(this, stats);
+            stats.setVisibility(View.GONE);
         }
     }
 
@@ -106,10 +116,27 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
          * onClick handler
          */
         if(!loreDesc.isShown()){
-            SlidingHelper.slide_up(this, spellList);
-            spellList.setVisibility(View.GONE);
             loreDesc.setVisibility(View.VISIBLE);
             SlidingHelper.slide_down(this, loreDesc);
+            SlidingHelper.slide_up(this, stats);
+            stats.setVisibility(View.GONE);
+            SlidingHelper.slide_up(this, spellList);
+            spellList.setVisibility(View.GONE);
+        }
+    }
+
+    public void toggle_statsContents(View v)
+    {
+        /**
+         * onClick handler
+         */
+        if(!stats.isShown()){
+            stats.setVisibility(View.VISIBLE);
+            SlidingHelper.slide_down(this, stats);
+            SlidingHelper.slide_up(this, loreDesc);
+            loreDesc.setVisibility(View.GONE);
+            SlidingHelper.slide_up(this, spellList);
+            spellList.setVisibility(View.GONE);
         }
     }
 
@@ -117,14 +144,40 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
     {
         TextView name = (TextView) findViewById(R.id.champName);
         TextView title = (TextView) findViewById(R.id.champTitle);
+        TextView lore = (TextView) findViewById(R.id.loreDescLabel);
 
         name.setText(champ.getName());
         title.setText(champ.getTitle());
-        loreDesc.setText(champ.getLore());
+        lore.setText(champ.getLore());
 
+
+        Stats stats = champ.getStats();
+
+        TextView health = (TextView) findViewById(R.id.healthContent);
+        TextView mana = (TextView) findViewById(R.id.manaContent);
+        TextView damage = (TextView) findViewById(R.id.damage);
+        TextView as = (TextView) findViewById(R.id.attackSpeed);
+        TextView ms = (TextView) findViewById(R.id.movementSpeed);
+        TextView healthRegen = (TextView) findViewById(R.id.healthRegen);
+        TextView manaRegen = (TextView) findViewById(R.id.manaRegen);
+        TextView armor = (TextView) findViewById(R.id.armor);
+        TextView mr = (TextView) findViewById(R.id.magicResist);
+
+        health.setText(getStatDisplay(stats.getHp(), stats.getHpperlevel()));
+        mana.setText(getStatDisplay(stats.getMp(), stats.getMpperlevel()));
+        damage.setText(getStatDisplay(stats.getAttackdamage(), stats.getAttackdamageperlevel()));
+        as.setText(getStatDisplay(stats.getAttackspeedoffset(), stats.getAttackspeedperlevel()));
+        ms.setText(stats.getMovespeed() + "");
+        healthRegen.setText(getStatDisplay(stats.getHpregen(), stats.getHpregenperlevel()));
+        manaRegen.setText(getStatDisplay(stats.getMpregen(), stats.getMpregenperlevel()));
+        armor.setText(getStatDisplay(stats.getArmor(), stats.getArmorperlevel()));
+        mr.setText(getStatDisplay(stats.getSpellblock(), stats.getSpellblockperlevel()));
+
+        //Handle Spells
         List<ChampionSpell> spells = champ.getSpells();
-
         List<String> spellNames = new ArrayList<String>();
+        Passive passive = champ.getPassive();
+        spellNames.add(passive.getName());
 
         for(int i = 0; i < spells.size(); i++)
             spellNames.add(spells.get(i).getName());
@@ -135,6 +188,11 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
         spellList.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    private String getStatDisplay(double flat, double perLevel)
+    {
+        return flat + "(+" + perLevel + " per level)";
     }
 
     @Override
