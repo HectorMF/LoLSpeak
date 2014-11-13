@@ -1,6 +1,7 @@
 package org.perfectplay.com.lolspeak.GameInfoActivities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
@@ -160,11 +161,7 @@ public class ChampionListFragment extends Fragment implements AbsListView.OnItem
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
 
-            String description = champions[(int)id].getTitle();
-
-            toast.setText(description);
-
-            toast.show();
+            startActivity(new Intent(getActivity(), ChampionInfo.class));
         }
     }
 

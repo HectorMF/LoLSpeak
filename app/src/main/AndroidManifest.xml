@@ -45,6 +45,10 @@
             android:name=".GameInfoTabbed"
             android:label="@string/title_activity_game_info_tabbed" >
         </activity>
+        <activity
+            android:name=".GameInfoActivities.ChampionInfo"
+            android:label="@string/title_activity_champion_info" >
+        </activity>
     </application>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
