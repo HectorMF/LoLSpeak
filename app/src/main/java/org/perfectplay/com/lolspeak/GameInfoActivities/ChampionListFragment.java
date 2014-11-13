@@ -19,6 +19,9 @@ import org.perfectplay.com.lolspeak.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +43,7 @@ import main.java.riotapi.RiotApiException;
 public class ChampionListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private OnFragmentInteractionListener mListener;
-    private Champion[] champions;
+    private Map<String, Champion> champions;
 
     /**
      * The fragment's ListView/GridView.
@@ -83,13 +86,25 @@ public class ChampionListFragment extends Fragment implements AbsListView.OnItem
     public void FillList(ChampionList list)
     {
         data.clear();
-        Champion[] tempItems = new Champion[list.getData().values().size()];
-        list.getData().values().toArray(tempItems);
+        List<Champion> champs = new ArrayList<Champion>();
+        Champion[] dumbList = new Champion[list.getData().values().size()];
+        list.getData().values().toArray(dumbList);
 
-        champions = tempItems;
+        for(int i = 0; i < dumbList.length; i++)
+            champs.add(dumbList[i]);
 
-        for(int i =0; i < tempItems.length; i++) {
-            data.add(tempItems[i].getName());
+        Collections.sort(champs, new Comparator<Champion>() {
+            @Override
+            public int compare(Champion champion, Champion champion2) {
+                return champion.getName().compareTo(champion2.getName());
+            }
+        });
+
+        champions = new HashMap<String, Champion>();
+
+        for(int i =0; i < champs.size(); i++) {
+            data.add(champs.get(i).getName());
+            champions.put(champs.get(i).getName(), champs.get(i));
         }
     }
 
@@ -161,7 +176,11 @@ public class ChampionListFragment extends Fragment implements AbsListView.OnItem
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
 
-            startActivity(new Intent(getActivity(), ChampionInfo.class));
+            Intent intent = new Intent(getActivity(), ChampionInfo.class);
+            Bundle b = new Bundle();
+            b.putInt("key", champions.get(data.get((int) id)).getId()); //Your id
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
         }
     }
 

@@ -75,7 +75,9 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
                     //Collection<Champion> shittyList = api.getDataChampionList().getData().values();
                     //Champion[] champs = new Champion[shittyList.size()];
                     //api.getDataChampionList().getData().values().toArray(champs);
-                    data = api.getDataChampion(266, "en_US", "4.19.2", true, ChampData.ALL);
+                    Bundle b = getIntent().getExtras();
+                    int value = b.getInt("key");
+                    data = api.getDataChampion(value, "en_US", "4.19.2", true, ChampData.ALL);
                     final Runnable r = new Runnable()
                     {
                         public void run()
