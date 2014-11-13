@@ -37,22 +37,27 @@ import android.widget.ListView;
 public class ChatActivity extends Activity {
 
     private XMPPTCPConnection connection;
-    private static HashMap<String, ArrayList<Spanned>> messages = new HashMap<String, ArrayList<Spanned>>();
     private Handler mHandler = new Handler();
 
-    public String recipient = "sum47559389@pvp.net";
+    public String recipient;
     private EditText textMessage;
     private ListView listview;
     private Roster roster;
+    private Handler handler;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        handler = new Handler();
         textMessage = (EditText) this.findViewById(R.id.chatET);
         listview = (ListView) this.findViewById(R.id.listMessages);
+        recipient = (String)getIntent().getExtras().get("User");
+
+        if(recipient.indexOf("/") > 0)
+            recipient = recipient.substring(0, recipient.indexOf("/"));
+
         setListAdapter();
 
         // Set a listener to send a chat text message
@@ -66,7 +71,7 @@ public class ChatActivity extends Activity {
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(textMessage.getWindowToken(), 0);
-                Log.i("XMPPChatDemoActivity ", "Sending text " + text + " to " + to);
+
                 Message msg = new Message(to, Message.Type.chat);
                 msg.setBody(text);
                 if (connection != null) {
@@ -76,9 +81,9 @@ public class ChatActivity extends Activity {
                         e.printStackTrace();
                     }
                     //String fromName = connection.getUser()..getAccountAttribues("name");
-                    if(!messages.containsKey(recipient))
-                        messages.put(recipient, new ArrayList<Spanned>());
-                    messages.get(recipient).add(Html.fromHtml("<font color='red'><b>" + "You" + "</b></font>: " + text));
+                    if(!LoginActivity.messages.containsKey(recipient))
+                        LoginActivity.messages.put(recipient, new ArrayList<Spanned>());
+                    LoginActivity.messages.get(recipient).add(Html.fromHtml("<font color='red'><b>" + "You" + "</b></font>: " + text));
                     setListAdapter();
                 }
             }
@@ -86,47 +91,10 @@ public class ChatActivity extends Activity {
         connect();
     }
 
-    /**
-     * Called by Settings dialog when a connection is establised with
-     * the XMPP server
-     */
-    public void setConnection(XMPPTCPConnection connection) {
-        this.connection = connection;
-        this.roster = connection.getRoster();
-        if (connection != null) {
-            // Add a packet listener to get messages sent to us
-            PacketFilter filter =  MessageTypeFilter.CHAT;
-            connection.addPacketListener(new PacketListener() {
-                @Override
-                public void processPacket(Packet packet) {
-                    Message message = (Message) packet;
-                    if (message.getBody() != null) {
-                        Log.d("FROM", message.getFrom());
-                        String fromSimplified =  message.getFrom().substring(0,message.getFrom().indexOf("/"));
-                        String fromName = roster.getEntry(fromSimplified).getName();//roster.getEntry(message.getFrom()).getName();
-                        Log.i("XMPPChatDemoActivity ", " Text Recieved " + message.getBody() + " from " +  fromName);
-
-                        if(!messages.containsKey(fromSimplified))
-                            messages.put(fromSimplified, new ArrayList<Spanned>());
-                        messages.get(fromSimplified).add(Html.fromHtml("<font color='blue'><b>" + fromName + "</b></font>: " + message.getBody()));
-
-                        //messages.add(message.getBody());
-                        // Add the incoming message to the list view
-                        mHandler.post(new Runnable() {
-                            public void run() {
-                                setListAdapter();
-                            }
-                        });
-                    }
-                }
-            }, filter);
-        }
-    }
-
     private void setListAdapter() {
-        if(!messages.containsKey(recipient))
-            messages.put(recipient, new ArrayList<Spanned>());
-        ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(this, R.layout.listitem, messages.get(recipient));
+        if(!LoginActivity.messages.containsKey(recipient))
+            LoginActivity.messages.put(recipient, new ArrayList<Spanned>());
+        ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(this, R.layout.listitem, LoginActivity.messages.get(recipient));
         listview.setAdapter(adapter);
         listview.setSelection(adapter.getCount() - 1);
     }
@@ -137,8 +105,17 @@ public class ChatActivity extends Activity {
     }
 
     public void connect() {
+        final Runnable r = new Runnable()
+        {
+            public void run()
+            {
+                handler.postDelayed(this, 1000);
+                setListAdapter();
+            }
+        };
 
-        final ProgressDialog dialog = ProgressDialog.show(this, "Connecting...", "Please wait...", false);
+        handler.post(r);
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -152,31 +129,8 @@ public class ChatActivity extends Activity {
                 } catch (SmackException.NotConnectedException e) {
                     e.printStackTrace();
                 }
-                setConnection(connection);
-
-                Collection<RosterEntry> entries = roster.getEntries();
-                for (RosterEntry entry : entries) {
-
-                    Log.d("XMPPChatDemoActivity",  "--------------------------------------");
-                    Log.d("XMPPChatDemoActivity", "RosterEntry " + entry);
-                    Log.d("XMPPChatDemoActivity", "User: " + entry.getUser());
-                    Log.d("XMPPChatDemoActivity", "Name: " + entry.getName());
-                    Log.d("XMPPChatDemoActivity", "Status: " + entry.getStatus());
-                    Log.d("XMPPChatDemoActivity", "Type: " + entry.getType());
-                    Presence entryPresence = roster.getPresence(entry.getUser());
-
-                    Log.d("XMPPChatDemoActivity", "Presence Status: "+ entryPresence.getStatus());
-                    Log.d("XMPPChatDemoActivity", "Presence Type: " + entryPresence.getType());
-
-                    Presence.Type type = entryPresence.getType();
-                    if (type == Presence.Type.available)
-                        Log.d("XMPPChatDemoActivity", "Presence AVIALABLE");
-                    Log.d("XMPPChatDemoActivity", "Presence : " + entryPresence);
-                }
-                dialog.dismiss();
             }
         });
         t.start();
-        dialog.show();
     }
 }

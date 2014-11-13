@@ -16,6 +16,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,13 +31,19 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import android.util.*;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 
@@ -67,6 +75,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     private ConnectionConfiguration config;
     public static XMPPTCPConnection xmppConnection;
     public static Roster roster;
+    public static HashMap<String, ArrayList<Spanned>> messages = new HashMap<String, ArrayList<Spanned>>();
+    private static boolean attached = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,6 +334,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                 xmppConnection.connect();
                 xmppConnection.login(mEmail, "AIR_" + mPassword , "xiff");
                 roster = xmppConnection.getRoster();
+                    // Add a packet listener to get messages sent to us
+                if(!attached) {
+                    PacketFilter filter =  MessageTypeFilter.CHAT;
+                    xmppConnection.addPacketListener(new PacketListener() {
+                        @Override
+                        public void processPacket(Packet packet) {
+                            Message message = (Message) packet;
+                            if (message.getBody() != null) {
+                                String fromSimplified = message.getFrom().substring(0, message.getFrom().indexOf("/"));
+                                String fromName = roster.getEntry(fromSimplified).getName();
+                                if (!messages.containsKey(fromSimplified))
+                                    messages.put(fromSimplified, new ArrayList<Spanned>());
+                                messages.get(fromSimplified).add(Html.fromHtml("<font color='blue'><b>" + fromName + "</b></font>: " + message.getBody()));
+                            }
+                        }
+                    }, filter);
+                    attached = true;
+                }
             } catch (XMPPException e) {
                 e.printStackTrace();
             } catch (SmackException e) {
