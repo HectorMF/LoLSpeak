@@ -2,6 +2,7 @@ package org.perfectplay.com.lolspeak.GameInfoActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +13,14 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import org.perfectplay.com.lolspeak.R;
+import org.perfectplay.com.lolspeak.Utility.SlidingHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import constant.Region;
+import constant.staticdata.ChampData;
 import constant.staticdata.SpellData;
 import dto.Static.Champion;
 import dto.Static.ChampionList;
@@ -29,24 +32,29 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
 
     private ArrayAdapter<String> mAdapter;
     private ArrayList<String> data;
+    private Handler handler;
+    private ListView spellList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champion_info);
+        handler = new Handler();
+
+
 
         // Set the adapter
-        ListView view = (ListView) findViewById(R.id.spellList);
-
+        spellList = (ListView) findViewById(R.id.spellListContent);
+        spellList.setVisibility(View.GONE);
         data = new ArrayList<String>();
 
         mAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, data);
 
-        view.setAdapter(mAdapter);
+        spellList.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
-        view.setOnItemClickListener(this);
+        spellList.setOnItemClickListener(this);
 
         Thread t = new Thread()
         {
@@ -59,14 +67,41 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
                     //Collection<Champion> shittyList = api.getDataChampionList().getData().values();
                     //Champion[] champs = new Champion[shittyList.size()];
                     //api.getDataChampionList().getData().values().toArray(champs);
-                    dto.Champion.Champion champ = api.getChampionById(266);
-                    PopulatePage(api.getDataChampion(266));
+                    dto.Static.Champion champ = api.getDataChampion(266, "en_US", "4.19.2", true, ChampData.ALL);
+                    PopulatePage(champ);
                 } catch (RiotApiException e) {
                     e.printStackTrace();
                 }
             }};
 
         t.start();
+
+        final Runnable r = new Runnable()
+        {
+            public void run()
+            {
+                if(mAdapter.getCount() == 0)
+                    handler.postDelayed(this, 500);
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+
+        handler.post(r);
+    }
+
+    public void toggle_spellContents(View v)
+    {
+        /**
+         * onClick handler
+         */
+        if(spellList.isShown()){
+            SlidingHelper.slide_up(this, spellList);
+            spellList.setVisibility(View.GONE);
+        }
+        else{
+            spellList.setVisibility(View.VISIBLE);
+            SlidingHelper.slide_down(this, spellList);
+        }
     }
 
     public void PopulatePage(Champion champ)
