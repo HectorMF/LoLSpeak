@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.perfectplay.com.lolspeak.R;
 import org.perfectplay.com.lolspeak.Utility.SlidingHelper;
@@ -31,9 +32,10 @@ import main.java.riotapi.RiotApiException;
 public class ChampionInfo extends Activity implements ListView.OnItemClickListener{
 
     private ArrayAdapter<String> mAdapter;
-    private ArrayList<String> data;
+    private Champion data;
     private Handler handler;
     private ListView spellList;
+    private TextView loreDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,11 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
 
         // Set the adapter
         spellList = (ListView) findViewById(R.id.spellListContent);
+        loreDesc = (TextView) findViewById(R.id.loreDesc);
+
+        loreDesc.setVisibility(View.GONE);
         spellList.setVisibility(View.GONE);
-        data = new ArrayList<String>();
-
-        mAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, data);
-
-        spellList.setAdapter(mAdapter);
+        List<String> emptyList = new ArrayList<String>();
 
         // Set OnItemClickListener so we can be notified on item clicks
         spellList.setOnItemClickListener(this);
@@ -67,26 +67,24 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
                     //Collection<Champion> shittyList = api.getDataChampionList().getData().values();
                     //Champion[] champs = new Champion[shittyList.size()];
                     //api.getDataChampionList().getData().values().toArray(champs);
-                    dto.Static.Champion champ = api.getDataChampion(266, "en_US", "4.19.2", true, ChampData.ALL);
-                    PopulatePage(champ);
+                    data = api.getDataChampion(266, "en_US", "4.19.2", true, ChampData.ALL);
+                    final Runnable r = new Runnable()
+                    {
+                        public void run()
+                        {
+                            if(data == null)
+                                handler.postDelayed(this, 500);
+                            PopulatePage(data);
+                        }
+                    };
+
+                    handler.post(r);
                 } catch (RiotApiException e) {
                     e.printStackTrace();
                 }
             }};
 
         t.start();
-
-        final Runnable r = new Runnable()
-        {
-            public void run()
-            {
-                if(mAdapter.getCount() == 0)
-                    handler.postDelayed(this, 500);
-                mAdapter.notifyDataSetChanged();
-            }
-        };
-
-        handler.post(r);
     }
 
     public void toggle_spellContents(View v)
@@ -94,24 +92,49 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
         /**
          * onClick handler
          */
-        if(spellList.isShown()){
-            SlidingHelper.slide_up(this, spellList);
-            spellList.setVisibility(View.GONE);
-        }
-        else{
+        if(!spellList.isShown()){
             spellList.setVisibility(View.VISIBLE);
             SlidingHelper.slide_down(this, spellList);
+            SlidingHelper.slide_up(this, loreDesc);
+            loreDesc.setVisibility(View.GONE);
+        }
+    }
+
+    public void toggle_loreContents(View v)
+    {
+        /**
+         * onClick handler
+         */
+        if(!loreDesc.isShown()){
+            SlidingHelper.slide_up(this, spellList);
+            spellList.setVisibility(View.GONE);
+            loreDesc.setVisibility(View.VISIBLE);
+            SlidingHelper.slide_down(this, loreDesc);
         }
     }
 
     public void PopulatePage(Champion champ)
     {
+        TextView name = (TextView) findViewById(R.id.champName);
+        TextView title = (TextView) findViewById(R.id.champTitle);
+
+        name.setText(champ.getName());
+        title.setText(champ.getTitle());
+        loreDesc.setText(champ.getLore());
+
         List<ChampionSpell> spells = champ.getSpells();
 
-        data.clear();
+        List<String> spellNames = new ArrayList<String>();
 
         for(int i = 0; i < spells.size(); i++)
-            data.add(spells.get(i).getName());
+            spellNames.add(spells.get(i).getName());
+
+        mAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, spellNames);
+
+        spellList.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
