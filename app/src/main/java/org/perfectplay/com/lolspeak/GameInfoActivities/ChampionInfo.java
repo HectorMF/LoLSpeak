@@ -23,6 +23,7 @@ import org.perfectplay.com.lolspeak.Utility.SlidingHelper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import constant.Region;
 import constant.staticdata.ChampData;
@@ -32,6 +33,7 @@ import dto.Static.ChampionList;
 import dto.Static.ChampionSpell;
 import dto.Static.Passive;
 import dto.Static.Stats;
+import dto.Summoner.Summoner;
 import main.java.riotapi.RiotApi;
 import main.java.riotapi.RiotApiException;
 
@@ -82,6 +84,7 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
                     Bundle b = getIntent().getExtras();
                     int value = b.getInt("key");
                     data = api.getDataChampion(value, "en_US", "4.19.2", true, ChampData.ALL);
+
                     final Runnable r = new Runnable()
                     {
                         public void run()
@@ -227,7 +230,7 @@ public class ChampionInfo extends Activity implements ListView.OnItemClickListen
         if(i == 0)
             toast.setText(data.getPassive().getDescription());
         else
-            toast.setText(data.getSpells().get(i-1).getDescription());
+            toast.setText(data.getSpells().get(i - 1).getDescription());
         toast.show();
     }
 }
