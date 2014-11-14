@@ -10,16 +10,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Map;
 
 import constant.Region;
+import constant.Season;
+import dto.Stats.AggregatedStats;
+import dto.Stats.PlayerStatsSummary;
+import dto.Stats.PlayerStatsSummaryList;
 import dto.Summoner.Summoner;
+import dto.Summoner.SummonerName;
 import main.java.riotapi.RiotApi;
 import main.java.riotapi.RiotApiException;
 
 
 public class SummonerReview extends Activity implements Button.OnClickListener{
-    private Summoner data;
+    private PlayerStatsSummaryList data;
     private Handler handler;
 
     @Override
@@ -32,10 +38,29 @@ public class SummonerReview extends Activity implements Button.OnClickListener{
         handler = new Handler();
     }
 
-    public void PopulatePage(Summoner data)
+    public void PopulatePage(String name, PlayerStatsSummaryList data)
     {
-        TextView name = (TextView) findViewById(R.id.summonerName);
-        name.setText(data.getName());
+        List<PlayerStatsSummary> stats = data.getPlayerStatSummaries();
+
+        int i = 0;
+
+        while(!stats.get(i).getPlayerStatSummaryType().equalsIgnoreCase("unranked"))
+            i++;
+
+        AggregatedStats aStat = stats.get(i).getAggregatedStats();
+        TextView nameLbl = (TextView) findViewById(R.id.summonerName);
+        nameLbl.setText(name);
+
+        TextView won = (TextView) findViewById(R.id.won);
+        TextView kills = (TextView) findViewById(R.id.kills);
+        TextView minions = (TextView) findViewById(R.id.minion);
+        TextView turrets = (TextView) findViewById(R.id.towers);
+
+        won.setText(stats.get(i).getWins() + "");
+        kills.setText(aStat.getTotalChampionKills() + "");
+        minions.setText(aStat.getTotalMinionKills() + "");
+        turrets.setText(aStat.getTotalTurretsKilled() + "");
+
     }
 
 
@@ -77,17 +102,26 @@ public class SummonerReview extends Activity implements Button.OnClickListener{
                 } catch (RiotApiException e) {
                     e.printStackTrace();
                 }
+                
                 Summoner[] summoners = new Summoner[summoner.size()];
                 summoner.values().toArray(summoners);
-                data = summoners[0];
+                if(summoners.length == 0) data = null;
+                else {
+                    long id = summoners[0].getId();
+                    try {
+                        data = api.getPlayerStatsSummary(Region.NA, Season.Season4, id);
+                    } catch (RiotApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                final String name = summoners[0].getName();
 
                 final Runnable r = new Runnable()
                 {
                     public void run()
                     {
-                        if(data == null)
-                            handler.postDelayed(this, 500);
-                        PopulatePage(data);
+                        PopulatePage(name, data);
                     }
                 };
 
