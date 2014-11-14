@@ -54,6 +54,8 @@ public class ChatActivity extends Activity {
         textMessage = (EditText) this.findViewById(R.id.chatET);
         listview = (ListView) this.findViewById(R.id.listMessages);
         recipient = (String)getIntent().getExtras().get("User");
+        LoginActivity.xmppConnection.removePacketListener(LoginActivity.listener);
+        LoginActivity.xmppConnection.addPacketListener(LoginActivity.listener, MessageTypeFilter.CHAT);
 
         if(recipient.indexOf("/") > 0)
             recipient = recipient.substring(0, recipient.indexOf("/"));
