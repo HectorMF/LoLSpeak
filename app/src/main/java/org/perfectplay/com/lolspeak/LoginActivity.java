@@ -77,6 +77,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     public static Roster roster;
     public static HashMap<String, ArrayList<Spanned>> messages = new HashMap<String, ArrayList<Spanned>>();
     private static boolean attached = false;
+    public static PacketListener listener = new PacketListener() {
+        @Override
+        public void processPacket(Packet packet) {
+            Message message = (Message) packet;
+            if (message.getBody() != null) {
+                String fromSimplified = message.getFrom().substring(0, message.getFrom().indexOf("/"));
+                String fromName = roster.getEntry(fromSimplified).getName();
+                if (!messages.containsKey(fromSimplified))
+                    messages.put(fromSimplified, new ArrayList<Spanned>());
+                messages.get(fromSimplified).add(Html.fromHtml("<font color='blue'><b>" + fromName + "</b></font>: " + message.getBody()));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +121,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                 attemptLogin();
             }
         });
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -335,23 +349,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                 xmppConnection.login(mEmail, "AIR_" + mPassword , "xiff");
                 roster = xmppConnection.getRoster();
                     // Add a packet listener to get messages sent to us
-                if(!attached) {
-                    PacketFilter filter =  MessageTypeFilter.CHAT;
-                    xmppConnection.addPacketListener(new PacketListener() {
-                        @Override
-                        public void processPacket(Packet packet) {
-                            Message message = (Message) packet;
-                            if (message.getBody() != null) {
-                                String fromSimplified = message.getFrom().substring(0, message.getFrom().indexOf("/"));
-                                String fromName = roster.getEntry(fromSimplified).getName();
-                                if (!messages.containsKey(fromSimplified))
-                                    messages.put(fromSimplified, new ArrayList<Spanned>());
-                                messages.get(fromSimplified).add(Html.fromHtml("<font color='blue'><b>" + fromName + "</b></font>: " + message.getBody()));
-                            }
-                        }
-                    }, filter);
-                    attached = true;
-                }
+                PacketFilter filter =  MessageTypeFilter.CHAT;
+                xmppConnection.removePacketListener(listener);
+                xmppConnection.addPacketListener(listener, filter);
             } catch (XMPPException e) {
                 e.printStackTrace();
             } catch (SmackException e) {
