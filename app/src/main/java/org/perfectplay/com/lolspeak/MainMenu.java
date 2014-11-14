@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import dto.Team.Roster;
+
 
 public class MainMenu extends Activity implements View.OnClickListener{
 
@@ -54,7 +56,7 @@ public class MainMenu extends Activity implements View.OnClickListener{
                 startActivity(new Intent(this, GameInfoTabbed.class));
                 break;
             case R.id.friendsButton:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, RosterActivity.class));
                 break;
             case R.id.summonerReviewButton:
                 startActivity(new Intent(this, SummonerReview.class));

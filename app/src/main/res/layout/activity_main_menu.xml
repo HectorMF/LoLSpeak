@@ -20,7 +20,15 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Game Info"
+            android:text="League Chat"
+            android:id="@+id/friendsButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.34"
+            android:textSize="30dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Game Information"
             android:id="@+id/gameInfoButton"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.34"
@@ -31,15 +39,6 @@
             android:layout_height="wrap_content"
             android:text="Summoner Review"
             android:id="@+id/summonerReviewButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.34"
-            android:textSize="30dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Friends List"
-            android:id="@+id/friendsButton"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.34"
             android:textSize="30dp" />

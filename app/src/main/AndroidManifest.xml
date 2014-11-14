@@ -57,6 +57,10 @@
             android:name=".SummonerReview"
             android:label="@string/title_activity_summoner_review" >
         </activity>
+        <activity
+            android:name=".RosterActivity"
+            android:label="@string/title_activity_roster" >
+        </activity>
     </application>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->

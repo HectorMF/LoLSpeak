@@ -21,5 +21,11 @@
     <string name="title_activity_champion_info">ChampionInfo</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="title_activity_summoner_review">SummonerReview</string>
+    <string name="title_activity_roster">RosterActivity</string>
+    <string name="presence_prompt">Presence</string>
 
+    <string-array name="presence_arrays">
+        <item>Available</item>
+        <item>Unavailable</item>
+    </string-array>
 </resources>
