@@ -9,7 +9,9 @@ import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -26,6 +28,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -77,6 +80,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     public static Roster roster;
     public static HashMap<String, ArrayList<Spanned>> messages = new HashMap<String, ArrayList<Spanned>>();
     private static boolean attached = false;
+
+    public static Typeface font;
     public static PacketListener listener = new PacketListener() {
         @Override
         public void processPacket(Packet packet) {
@@ -95,6 +100,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        font = Typeface.createFromAsset(getAssets(), "fonts/OSP-DIN.ttf");
+        TextView text = (TextView) findViewById(R.id.logo);
+        text.setTypeface(font);
+        text = (TextView) findViewById(R.id.logo2);
+        text.setTypeface(font);
+        int id = Resources.getSystem().getIdentifier("btn_check_holo_dark", "drawable", "android");
+        ((CheckBox) findViewById(R.id.rememberPassword)).setButtonDrawable(id);
 
         Log.e(TAG, "+++ In onCreate() +++");
 
