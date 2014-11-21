@@ -23,8 +23,8 @@
     <string name="title_activity_summoner_review">SummonerReview</string>
     <string name="title_activity_roster">RosterActivity</string>
     <string name="presence_prompt">Presence</string>
-    <string name="AppName">Camouflage</string>
-    <string name ="AppName2">Embrace Your Inner Teemo</string>
+    <string name="AppName">League Speak</string>
+    <string name ="AppName2">League Chat and Statistics</string>
 
     <string-array name="presence_arrays">
         <item>Available</item>

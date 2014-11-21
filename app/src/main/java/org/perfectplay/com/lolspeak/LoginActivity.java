@@ -352,7 +352,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            config = new ConnectionConfiguration("chat.na1.lol.riotgames.com", 5223, "pvp.net");
+            config = new ConnectionConfiguration("chat.na2.lol.riotgames.com", 5223, "pvp.net");
             config.setSecurityMode(ConnectionConfiguration.SecurityMode.enabled);
             config.setSocketFactory(new DummySSLSocketFactory());
             config.setCompressionEnabled(true);
