@@ -1,15 +1,23 @@
 package org.perfectplay.com.lolspeak;
 
 import android.app.Activity;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.fitness.AggregateDataTypes;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +32,7 @@ import main.java.riotapi.RiotApi;
 import main.java.riotapi.RiotApiException;
 
 
-public class SummonerReview extends Activity implements Button.OnClickListener{
+public class SummonerReview extends Activity implements Button.OnClickListener, AdapterView.OnItemSelectedListener{
     private PlayerStatsSummaryList data;
     private Handler handler;
 
@@ -38,16 +46,11 @@ public class SummonerReview extends Activity implements Button.OnClickListener{
         handler = new Handler();
     }
 
-    public void PopulatePage(String name, PlayerStatsSummaryList data)
+    public void PopulatePage(String name)
     {
         List<PlayerStatsSummary> stats = data.getPlayerStatSummaries();
 
-        int i = 0;
-
-        while(!stats.get(i).getPlayerStatSummaryType().equalsIgnoreCase("unranked"))
-            i++;
-
-        AggregatedStats aStat = stats.get(i).getAggregatedStats();
+        AggregatedStats aStat = stats.get(0).getAggregatedStats();
         TextView nameLbl = (TextView) findViewById(R.id.summonerName);
         nameLbl.setText(name);
 
@@ -56,11 +59,29 @@ public class SummonerReview extends Activity implements Button.OnClickListener{
         TextView minions = (TextView) findViewById(R.id.minion);
         TextView turrets = (TextView) findViewById(R.id.towers);
 
-        won.setText(stats.get(i).getWins() + "");
+        won.setText(stats.get(0).getWins() + "");
         kills.setText(aStat.getTotalChampionKills() + "");
         minions.setText(aStat.getTotalMinionKills() + "");
         turrets.setText(aStat.getTotalTurretsKilled() + "");
 
+        Spinner spinner = (Spinner) findViewById(R.id.typeDropDown);
+
+        ArrayList list = new ArrayList<String>();
+
+        for(int i = 0; i<data.getPlayerStatSummaries().size(); i++)
+            list.add(data.getPlayerStatSummaries().get(i).getPlayerStatSummaryType());
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1, android.R.id.text1, list);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        spinner.setSelection(0);
+        spinner.setVisibility(View.VISIBLE);
+        spinner.setOnItemSelectedListener(this);
+
+        GridLayout layout = (GridLayout) findViewById(R.id.infoGrid);
+        layout.setVisibility(View.VISIBLE);
     }
 
 
@@ -121,7 +142,7 @@ public class SummonerReview extends Activity implements Button.OnClickListener{
                 {
                     public void run()
                     {
-                        PopulatePage(name, data);
+                        PopulatePage(name);
                     }
                 };
 
@@ -129,5 +150,26 @@ public class SummonerReview extends Activity implements Button.OnClickListener{
             }};
 
         t.start();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        PlayerStatsSummary stats = data.getPlayerStatSummaries().get(i);
+        AggregatedStats aStat = stats.getAggregatedStats();
+
+        TextView won = (TextView) findViewById(R.id.won);
+        TextView kills = (TextView) findViewById(R.id.kills);
+        TextView minions = (TextView) findViewById(R.id.minion);
+        TextView turrets = (TextView) findViewById(R.id.towers);
+
+        won.setText(stats.getWins() + "");
+        kills.setText(aStat.getTotalChampionKills() + "");
+        minions.setText(aStat.getTotalMinionKills() + "");
+        turrets.setText(aStat.getTotalTurretsKilled() + "");
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
