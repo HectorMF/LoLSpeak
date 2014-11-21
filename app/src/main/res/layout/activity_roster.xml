@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#fff">
 
     <Spinner
         android:layout_width="match_parent"
@@ -10,7 +11,8 @@
         android:id="@+id/presence"
         android:layout_gravity="center_horizontal"
         android:entries="@array/presence_arrays"
-        android:prompt="@string/presence_prompt"/>
+        android:prompt="@string/presence_prompt"
+        android:background="#ffffffff" />
 
     <ListView
         android:id="@+id/listRoster"
@@ -23,5 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/status"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#ffffffff" />
 </LinearLayout>

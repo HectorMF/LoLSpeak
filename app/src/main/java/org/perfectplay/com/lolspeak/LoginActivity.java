@@ -3,6 +3,7 @@ package org.perfectplay.com.lolspeak;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
@@ -109,6 +110,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         text.setTypeface(font);
         int id = Resources.getSystem().getIdentifier("btn_check_holo_dark", "drawable", "android");
         ((CheckBox) findViewById(R.id.rememberPassword)).setButtonDrawable(id);
+
+
 
         Log.e(TAG, "+++ In onCreate() +++");
 
