@@ -16,6 +16,8 @@ import android.content.Loader;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -35,12 +37,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
 import android.util.*;
 import android.widget.Toast;
 
@@ -87,6 +92,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     //Location
     private LocationClient mLocationClient;
     private Location mLocation;
+    private Spinner mRegion;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -163,15 +169,65 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
         mLocation = mLocationClient.getLastLocation();
+
+        double lat = mLocation.getLatitude();
+        double lon = mLocation.getLongitude();
+
+        if(lat < -90)
+        {
+            if(lon > 45 && lon < 75)
+                mRegion.setSelection(7);
+        }
+        else if(lat < -60)
+        {
+            if(lon < 45 && lon  > 30)
+                mRegion.setSelection(6);
+        }
+        else if(lat < -30)
+        {
+            if(lon > 30 && lon < 75)
+                mRegion.setSelection(2);
+        }
+        else if(lat < 30)
+        {
+            if(lon < 60 && lon > 30)
+                mRegion.setSelection(1);
+        }
+        else if(lat < 60)
+        {
+            if(lon > -30 && lon < 0)
+                mRegion.setSelection(5);
+            if(lon < 15 && lon > -20)
+                mRegion.setSelection(8);
+            if(lon < -20 && lon > -60)
+                mRegion.setSelection(9);
+        }
+        else if(lat < 90)
+        {
+            if(lon < 15 && lon > -20)
+                mRegion.setSelection(8);
+            if(lon < -20 && lon > -60)
+                mRegion.setSelection(9);
+            if(lon < 75 && lon > 30)
+                mRegion.setSelection(0);
+        }
+        else if(lat < 120)
+        {
+            if(lon < 75 && lon > 30)
+                mRegion.setSelection(0);
+        }
+        else
+        {
+            mRegion.setSelection(4);
+        }
     }
 
     @Override
     public void onDisconnected() {
         // Display the connection status
-        Toast.makeText(this, "Disconnected. Please re-connect.",
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -221,6 +277,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         int id = Resources.getSystem().getIdentifier("btn_check_holo_dark", "drawable", "android");
         ((CheckBox) findViewById(R.id.rememberPassword)).setButtonDrawable(id);
 
+        mRegion = (Spinner)findViewById(R.id.regionSpinner);
         mLocationClient = new LocationClient(this, this, this);
 
         Log.e(TAG, "+++ In onCreate() +++");

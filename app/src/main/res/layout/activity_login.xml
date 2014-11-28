@@ -106,7 +106,7 @@
                 <Spinner
                     android:layout_width="306dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/spinner"
+                    android:id="@+id/regionSpinner"
                     android:minWidth="306dp"
                     android:maxWidth="350dp"
                     android:spinnerMode="dialog"
