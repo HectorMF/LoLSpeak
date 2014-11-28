@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:singleLine="false"
     android:textStyle="normal"
-    android:textColor="#333"
-    android:background="#fff"
+    android:textColor="#fff"
+    android:background="#333"
     android:paddingLeft="15dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp" />

@@ -362,7 +362,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         if (mAuthTask != null) {
             return;
         }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -522,10 +521,35 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             mPassword = password;
         }
 
+        private String idToServer(int id) {
+            if(id == 0)
+                return "chat.na2.lol.riotgames.com";
+            if(id == 1)
+                return "chat.euw1.lol.riotgames.com";
+            if(id == 2)
+                return "chat.eun1.riotgames.com";
+            if(id == 3)
+                return "chat.pbe1.lol.riotgames.com";
+            if(id == 4)
+                return "chat.oc1.lol.riotgames.com";
+            if(id == 5)
+                return "chat.br.lol.riotgames.com";
+            if(id == 6)
+                return "chat.tr.lol.riotgames.com";
+            if(id == 7)
+                return "chat.ru.lol.riotgames.com";
+            if(id == 8)
+                return "chat.la1.lol.riotgames.com";
+            if(id == 9)
+                return "chat.la2.lol.riotgames.com";
+
+            return "chat.na2.lol.riotgames.com";
+        }
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            config = new ConnectionConfiguration("chat.na2.lol.riotgames.com", 5223, "pvp.net");
+            Log.d("LoginActivity", "Attempting to Login to server: " + idToServer((int)mRegion.getSelectedItemId()));
+            config = new ConnectionConfiguration(idToServer((int)mRegion.getSelectedItemId()), 5223, "pvp.net");
             config.setSecurityMode(ConnectionConfiguration.SecurityMode.enabled);
             config.setSocketFactory(new DummySSLSocketFactory());
             config.setCompressionEnabled(true);

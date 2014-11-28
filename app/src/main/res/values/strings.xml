@@ -26,7 +26,7 @@
     <string name="AppName">League Speak</string>
     <string name ="AppName2">League Chat and Statistics</string>
     <string name = "mainMenu"> Main Menu</string>
-
+    <string name = "roster"> Friends List</string>
     <string-array name="presence_arrays">
         <item>Available</item>
         <item>Unavailable</item>

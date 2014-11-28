@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#333">
 
     <ListView
         android:id="@+id/listMessages"
@@ -16,26 +17,37 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="#444444"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_gravity="center_vertical">
 
         <EditText
             android:id="@+id/chatET"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_weight="1"
             android:gravity="top"
-            android:hint="Type to compose"
-            android:scrollHorizontally="true" >
+            android:hint="Message..."
+            android:scrollHorizontally="true"
+            android:layout_marginLeft="10dp"
+            android:background="#fff"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_gravity="center_vertical">
         </EditText>
 
         <Button
             android:id="@+id/sendBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
             android:text="Send"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 </LinearLayout>

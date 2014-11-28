@@ -3,28 +3,49 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#fff">
+    android:background="#333">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/roster"
+        android:id="@+id/logo"
+        android:textSize="55dp"
+        android:textColor="#ff6ab5ff"
+        android:textStyle="bold"
+        android:gravity="right"
+        android:layout_marginBottom="2dp"
+        android:layout_gravity="center_horizontal" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/presence"
-        android:layout_gravity="center_horizontal"
-        android:entries="@array/server_arrays"
+        android:entries="@array/presence_arrays"
         android:prompt="@string/presence_prompt"
-        android:background="#ffffffff" />
+        android:background="#ffffffff"
+        android:focusable="false"
+        android:spinnerMode="dialog"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/listRoster"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:scrollbars="horizontal" />
+        android:scrollbars="horizontal"
+        android:background="#333" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/status"
         android:layout_gravity="center_horizontal"
-        android:background="#ffffffff" />
+        android:background="#ffffffff"
+        android:hint="Status Message..."
+        android:paddingLeft="10dp"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
 </LinearLayout>

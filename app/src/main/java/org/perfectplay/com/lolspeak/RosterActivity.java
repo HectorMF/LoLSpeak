@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.packet.Presence;
@@ -25,6 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class RosterActivity extends Activity {
+    private ArrayAdapter<Spanned> adapter;
     private Spinner spinner1;
     private ListView listview;
     private HashMap<String, String> nameLookup = new HashMap<String, String>();
@@ -34,8 +36,11 @@ public class RosterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roster);
 
-        spinner1 = (Spinner) findViewById(R.id.presence);
+       // spinner1 = (Spinner) findViewById(R.id.presence);
         listview = (ListView) findViewById(R.id.listRoster);
+
+        TextView text = (TextView) findViewById(R.id.logo);
+        text.setTypeface(LoginActivity.font);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parentView, View childView,
@@ -57,8 +62,8 @@ public class RosterActivity extends Activity {
         {
             public void run()
             {
-                handler.postDelayed(this, 2000);
-                setListAdapter();
+                handler.postDelayed(this, 5000);
+                updateListAdapter();
             }
         };
 
@@ -91,10 +96,43 @@ public class RosterActivity extends Activity {
                 nameLookup.put(entry.getName(), entry.getUser());
             }
         }
-        ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(this, R.layout.listitem, roster);
+        for (RosterEntry entry : entries) {
+            Presence p = LoginActivity.roster.getPresence(entry.getUser());
+            if(p.getType() == Presence.Type.unavailable) {
+                roster.add(Html.fromHtml("<font color=" +"#666666" + "><b>" + entry.getName() + "</b></font>"));
+                nameLookup.put(entry.getName(), entry.getUser());
+            }
+        }
+        adapter = new ArrayAdapter<Spanned>(this, R.layout.listitem, roster);
         listview.setAdapter(adapter);
-        listview.setSelection(adapter.getCount() - 1);
+        listview.setSelection(0);
     }
+
+
+    private void updateListAdapter() {
+        Collection<RosterEntry> entries = LoginActivity.roster.getEntries();
+        ArrayList<Spanned> roster = new ArrayList<Spanned>();
+        nameLookup.clear();
+        //ArrayAdapter<Spanned> adapter;
+        for (RosterEntry entry : entries) {
+            Presence p = LoginActivity.roster.getPresence(entry.getUser());
+            if(p.getType() == Presence.Type.available) {
+                roster.add(Html.fromHtml("<b>" + entry.getName() + "</b>"));
+                nameLookup.put(entry.getName(), entry.getUser());
+            }
+        }
+        for (RosterEntry entry : entries) {
+            Presence p = LoginActivity.roster.getPresence(entry.getUser());
+            if(p.getType() == Presence.Type.unavailable) {
+                roster.add(Html.fromHtml("<font color=" +"#666666" + "><b>" + entry.getName() + "</b></font>"));
+                nameLookup.put(entry.getName(), entry.getUser());
+            }
+        }
+        adapter.clear();
+        adapter.addAll(roster);
+        adapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

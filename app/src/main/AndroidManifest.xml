@@ -53,6 +53,7 @@
             android:label="@string/title_activity_champion_info" >
         </activity>
         <activity
+            android:theme="@android:style/Theme.NoTitleBar"
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
@@ -61,6 +62,7 @@
             android:label="@string/title_activity_summoner_review" >
         </activity>
         <activity
+            android:theme="@android:style/Theme.NoTitleBar"
             android:name=".RosterActivity"
             android:label="@string/title_activity_roster" >
         </activity>
