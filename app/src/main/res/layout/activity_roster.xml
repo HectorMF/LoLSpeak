@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/presence"
         android:layout_gravity="center_horizontal"
-        android:entries="@array/presence_arrays"
+        android:entries="@array/server_arrays"
         android:prompt="@string/presence_prompt"
         android:background="#ffffffff" />
 

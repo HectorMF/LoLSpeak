@@ -18,7 +18,9 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_weight="1" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -29,7 +31,7 @@
             <LinearLayout
                 android:id="@+id/email_login_form"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:weightSum="1"
                 android:orientation="vertical"
                 android:gravity="center">
@@ -37,7 +39,7 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginTop="60dp"
                     android:layout_marginBottom="40dp">
@@ -101,10 +103,14 @@
                     android:minWidth="300dp"
                     android:maxWidth="350dp" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
+                <Spinner
+                    android:layout_width="306dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner"
+                    android:minWidth="306dp"
+                    android:maxWidth="350dp"
+                    android:spinnerMode="dialog"
+                    android:entries="@array/server_arrays" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -132,11 +138,6 @@
 
             </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></LinearLayout>
 
 </LinearLayout>
 

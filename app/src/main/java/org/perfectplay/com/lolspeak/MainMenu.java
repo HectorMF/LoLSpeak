@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import dto.Team.Roster;
 
@@ -17,6 +18,9 @@ public class MainMenu extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        TextView text = (TextView) findViewById(R.id.logo);
+        text.setTypeface(LoginActivity.font);
 
         View gameInfoButton = (Button) findViewById(R.id.gameInfoButton);
         View summonerInfoButton = (Button) findViewById(R.id.summonerReviewButton);

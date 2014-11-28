@@ -3,12 +3,13 @@
     package="org.perfectplay.com.lolspeak" >
 
     <application
-        android:theme="@android:style/Theme.NoTitleBar"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/AppTheme"
         >
         <activity
+            android:theme="@android:style/Theme.NoTitleBar"
             android:name=".LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" >
@@ -19,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@android:style/Theme.NoTitleBar"
             android:name=".MainMenu"
             android:label="@string/title_activity_main_menu" >
         </activity>

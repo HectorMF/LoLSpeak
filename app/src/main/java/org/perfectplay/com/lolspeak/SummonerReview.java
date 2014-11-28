@@ -15,8 +15,6 @@ import android.widget.GridLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.gms.fitness.AggregateDataTypes;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

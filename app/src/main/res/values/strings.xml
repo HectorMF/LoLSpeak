@@ -25,6 +25,7 @@
     <string name="presence_prompt">Presence</string>
     <string name="AppName">League Speak</string>
     <string name ="AppName2">League Chat and Statistics</string>
+    <string name = "mainMenu"> Main Menu</string>
 
     <string-array name="presence_arrays">
         <item>Available</item>
@@ -32,7 +33,15 @@
     </string-array>
 
     <string-array name="server_arrays">
-        <item>NA</item>
+        <item>North America</item>
         <item>EU West</item>
+        <item>EU Nordic</item>
+        <item>PBE</item>
+        <item>Oceania</item>
+        <item>Brazil</item>
+        <item>Turkey</item>
+        <item>Russia</item>
+        <item>LA North</item>
+        <item>LA South</item>
     </string-array>
 </resources>

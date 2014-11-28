@@ -9,50 +9,79 @@
     tools:context="org.perfectplay.com.lolspeak.MainMenu"
     android:background="#333">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/main_menu_layout"
-        android:layout_alignParentBottom="true"
-        android:weightSum="1"
-        android:background="#333"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp">
+        android:id="@+id/scrollView" >
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="League Chat"
-            android:id="@+id/friendsButton"
-            android:layout_gravity="center_horizontal"
-            android:textSize="30dp"
-            android:layout_marginBottom="30dp"
-            android:textColor="#fff"
-            android:background="#ff6ab5ff" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Game Information"
-            android:id="@+id/gameInfoButton"
-            android:layout_gravity="center_horizontal"
-            android:textSize="30dp"
-            android:layout_marginBottom="30dp"
-            android:textColor="#fff"
-            android:background="#ff6ab5ff" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="40dp"
+                android:id="@+id/linearLayout"
+                android:layout_gravity="center_horizontal">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Summoner Review"
-            android:id="@+id/summonerReviewButton"
-            android:layout_gravity="center_horizontal"
-            android:textSize="30dp"
-            android:layout_marginBottom="30dp"
-            android:textColor="#fff"
-            android:background="#ff6ab5ff" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/mainMenu"
+                    android:id="@+id/logo"
+                    android:textSize="55dp"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:gravity="right"
+                    android:layout_marginBottom="2dp" />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="League Chat"
+                android:id="@+id/friendsButton"
+                android:layout_gravity="center_horizontal"
+                android:textSize="26dp"
+                android:layout_marginBottom="30dp"
+                android:textColor="#fff"
+                android:background="#ff6ab5ff"
+                android:maxWidth="350dp"
+                android:minWidth="300dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Game Information"
+                android:id="@+id/gameInfoButton"
+                android:layout_gravity="center_horizontal"
+                android:textSize="26dp"
+                android:layout_marginBottom="30dp"
+                android:textColor="#fff"
+                android:background="#ff6ab5ff"
+                android:minWidth="300dp"
+                android:maxWidth="350dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Summoner Review"
+                android:id="@+id/summonerReviewButton"
+                android:layout_gravity="center_horizontal"
+                android:textSize="26dp"
+                android:layout_marginBottom="30dp"
+                android:textColor="#fff"
+                android:background="#ff6ab5ff"
+                android:minWidth="300dp"
+                android:maxWidth="350dp" />
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>
