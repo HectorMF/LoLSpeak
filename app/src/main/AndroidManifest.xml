@@ -58,6 +58,7 @@
             android:label="@string/title_activity_chat" >
         </activity>
         <activity
+            android:theme="@android:style/Theme.NoTitleBar"
             android:name=".SummonerReview"
             android:label="@string/title_activity_summoner_review" >
         </activity>
