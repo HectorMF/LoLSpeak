@@ -39,6 +39,9 @@ public class SummonerReview extends Activity implements Button.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summoner_review);
 
+        TextView text = (TextView) findViewById(R.id.logo);
+        text.setTypeface(LoginActivity.font);
+
         Button btn = (Button) findViewById(R.id.searchButton);
         btn.setOnClickListener(this);
         handler = new Handler();
@@ -49,8 +52,6 @@ public class SummonerReview extends Activity implements Button.OnClickListener, 
         List<PlayerStatsSummary> stats = data.getPlayerStatSummaries();
 
         AggregatedStats aStat = stats.get(0).getAggregatedStats();
-        TextView nameLbl = (TextView) findViewById(R.id.summonerName);
-        nameLbl.setText(name);
 
         TextView won = (TextView) findViewById(R.id.won);
         TextView kills = (TextView) findViewById(R.id.kills);
